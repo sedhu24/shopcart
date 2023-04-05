@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shopcart/common/bottom_bar.dart';
 import 'package:shopcart/features/auth/screens/auth_screen.dart';

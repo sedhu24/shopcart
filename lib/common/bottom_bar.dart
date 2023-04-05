@@ -26,9 +26,9 @@ class _BottomBarState extends State<BottomBar> {
     )
   ];
 
-  void updatePage(int _page) {
+  void updatePage(int selectedpage) {
     setState(() {
-      page = _page;
+      page = selectedpage;
     });
   }
 
@@ -94,11 +94,11 @@ class _BottomBarState extends State<BottomBar> {
                             : GlobalVariables.backgroundColor),
                   ),
                 ),
-                child: badges.Badge(
+                child: const badges.Badge(
                   badgeContent: Text("2"),
                   badgeStyle:
                       badges.BadgeStyle(elevation: 0, badgeColor: Colors.white),
-                  child: const Icon(Icons.shopping_cart_outlined),
+                  child: Icon(Icons.shopping_cart_outlined),
                 ),
               ),
             ),

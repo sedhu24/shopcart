@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopcart/common/bottom_bar.dart';
 import 'package:shopcart/constants/error_handling.dart';
 import 'package:shopcart/constants/utils.dart';
-import 'package:shopcart/features/home/homescreen.dart';
 import 'package:shopcart/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopcart/providers/user_provider.dart';
@@ -48,8 +47,8 @@ class AuthService {
           );
         },
       );
-      print(res.statusCode);
-      print(res.body);
+      debugPrint(res.statusCode as String?);
+      debugPrint(res.body);
     } catch (e) {
       showSnackBar(context, e.toString());
     }

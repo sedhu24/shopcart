@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopcart/constants/global_variables.dart';
+import 'package:shopcart/features/account/widgets/single_product.dart';
 
 class Orders extends StatefulWidget {
   const Orders({super.key});
@@ -56,8 +57,14 @@ class _OrdersState extends State<Orders> {
             top: 20,
           ),
           child: ListView.builder(
-              itemCount: list.length, itemBuilder: (context, index) {}),
-          color: Colors.amber,
+              scrollDirection: Axis.horizontal,
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                return SingleProduct(
+                  image: list[index],
+                );
+              }),
+          // color: Colors.amber,
         )
       ],
     );

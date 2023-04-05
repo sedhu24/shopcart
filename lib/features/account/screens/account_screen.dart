@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shopcart/constants/global_variables.dart';
+import 'package:shopcart/features/account/widgets/below_appbar.dart';
+import 'package:shopcart/features/account/widgets/orders.dart';
+import 'package:shopcart/features/account/widgets/top_buttons.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -11,10 +14,12 @@ class AccountScreen extends StatelessWidget {
         preferredSize: const Size.fromHeight(50),
         child: AppBar(
           flexibleSpace: Container(
-            decoration:
-                const BoxDecoration(gradient: GlobalVariables.appBarGradient),
+            decoration: const BoxDecoration(
+              gradient: GlobalVariables.appBarGradient,
+            ),
           ),
-          title: Row(children: [
+          title:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Container(
               alignment: Alignment.topLeft,
               child: Image.asset(
@@ -23,9 +28,34 @@ class AccountScreen extends StatelessWidget {
                 height: 45,
                 // color: Colors.black,
               ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Icon(Icons.notifications_outlined),
+                  ),
+                  Icon(Icons.search)
+                ],
+              ),
             )
           ]),
         ),
+      ),
+      body: Column(
+        children: const [
+          BelowAppBar(),
+          SizedBox(
+            height: 10,
+          ),
+          TopButtons(),
+          SizedBox(
+            height: 20,
+          ),
+          Orders()
+        ],
       ),
     );
   }
