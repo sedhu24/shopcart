@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:shopcart/common/custom_buttom.dart';
 import 'package:shopcart/common/custom_textfiel.dart';
 import 'package:shopcart/constants/global_variables.dart';
 
@@ -98,7 +99,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 1,
                 ),
                 CustomTextfield(
                   hint: "Product Name",
@@ -149,7 +150,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       });
                     },
                   ),
-                )
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomButton(text: 'Sell', onTap: () {}),
               ],
             ),
           ),

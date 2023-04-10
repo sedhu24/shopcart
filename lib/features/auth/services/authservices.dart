@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shopcart/common/bottom_bar.dart';
+import 'package:shopcart/common/user_bottom_bar.dart';
 import 'package:shopcart/constants/error_handling.dart';
 import 'package:shopcart/constants/utils.dart';
 import 'package:shopcart/models/user.dart';
@@ -85,7 +85,7 @@ class AuthService {
 
           Navigator.pushNamedAndRemoveUntil(
             context,
-            BottomBar.routeName,
+            UserBottomBar.routeName,
             (route) => false,
           );
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopcart/common/bottom_bar.dart';
+import 'package:shopcart/common/user_bottom_bar.dart';
 import 'package:shopcart/constants/global_variables.dart';
+import 'package:shopcart/features/admin/screen/admin_screen.dart';
 import 'package:shopcart/features/auth/screens/auth_screen.dart';
 import 'package:shopcart/features/auth/services/authservices.dart';
 
@@ -49,7 +50,9 @@ class _MyAppState extends State<MyApp> {
         ),
         onGenerateRoute: ((settings) => generateRoute(settings)),
         home: Provider.of<UserProvider>(context).user.token.isNotEmpty
-            ? const BottomBar()
+            ? Provider.of<UserProvider>(context).user.type == 'user'
+                ? const UserBottomBar()
+                : const AdminScreen()
             : const Authscreen());
   }
 }

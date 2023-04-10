@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopcart/constants/global_variables.dart';
 
 class DealOfTheDay extends StatefulWidget {
   const DealOfTheDay({super.key});
@@ -51,6 +52,50 @@ class _DealOfTheDayState extends State<DealOfTheDay> {
             'Gucci Hand Bag',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.network(
+                'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Z3VjY2klMjBiYWd8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+                fit: BoxFit.fitWidth,
+                width: 100,
+                height: 100,
+              ),
+              Image.network(
+                'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Z3VjY2klMjBiYWd8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+                fit: BoxFit.fitWidth,
+                width: 100,
+                height: 100,
+              ),
+              Image.network(
+                'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Z3VjY2klMjBiYWd8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+                fit: BoxFit.fitWidth,
+                width: 100,
+                height: 100,
+              ),
+              Image.network(
+                'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Z3VjY2klMjBiYWd8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+                fit: BoxFit.fitWidth,
+                width: 100,
+                height: 100,
+              )
+            ],
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 15).copyWith(
+            left: 15,
+          ),
+          alignment: Alignment.topLeft,
+          child: const Text(
+            'See all deals',
+            style: TextStyle(
+                color: GlobalVariables.secondaryColor,
+                fontWeight: FontWeight.w500),
           ),
         )
       ],
