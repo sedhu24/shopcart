@@ -5,7 +5,7 @@ const cors = require("cors");
 
 // Import from Other Files
 const authRouter = require("./routes/auth");
-
+const adminRouter = require("./routes/admin");
 // InIt
 const PORT = 3000;
 const DB =
@@ -17,6 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(authRouter);
+app.use(adminRouter);
 // CLIENT -> MidleWare -> Server -> CLIENT
 
 // connection

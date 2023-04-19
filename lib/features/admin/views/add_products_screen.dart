@@ -6,6 +6,7 @@ import 'package:shopcart/constants/utils.dart';
 import 'package:shopcart/common/custom_buttom.dart';
 import 'package:shopcart/common/custom_textfiel.dart';
 import 'package:shopcart/constants/global_variables.dart';
+import 'package:shopcart/features/admin/services/admin_services.dart';
 
 class AddProductScreen extends StatefulWidget {
   static const String routeName = '/add-product';
@@ -21,6 +22,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
 
+  final AdminServices adminServices = AdminServices();
+
   @override
   void dispose() {
     super.dispose();
@@ -35,6 +38,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   List<File> images = [];
 
+  final addProductsFormKey = GlobalKey<FormState>();
+
   List<String> productCategories = [
     'Mobiles',
     'Essentials',
@@ -43,8 +48,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
     'Fashion',
   ];
 
+  void sellProducts() {
+    if (addProductsFormKey.currentState!.validate() && images.isNotEmpty) {
+      adminServices.sellproducts(
+        context: context,
+        productname: productsNameController.text,
+        description: descriptionController.text,
+        price: double.parse(priceController.text),
+        quantity: double.parse(quantityController.text),
+        category: categories,
+        images: images,
+      );
+    }
+  }
+
   void selectimages() async {
     var result = await pickimages();
+
+    debugPrint(result.toString());
 
     setState(() {
       images = result;
@@ -79,6 +100,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             horizontal: 10,
           ),
           child: Form(
+            key: addProductsFormKey,
             child: Column(
               children: [
                 const SizedBox(
@@ -193,7 +215,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                CustomButton(text: 'Sell', onTap: () {}),
+                CustomButton(text: 'Sell', onTap: sellProducts),
               ],
             ),
           ),

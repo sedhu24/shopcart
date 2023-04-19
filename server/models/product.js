@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
-
 const adminRouter = require("../routes/admin");
 
 const productsScheme = mongoose.Schema({
-  productsName: {
+  productName: {
     required: true,
     type: String,
     trim: true,

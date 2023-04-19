@@ -9,6 +9,7 @@ class BelowAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final users = Provider.of<UserProvider>(context).user;
+
     return Container(
       decoration: const BoxDecoration(
         gradient: GlobalVariables.appBarGradient,

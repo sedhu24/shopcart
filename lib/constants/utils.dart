@@ -15,12 +15,13 @@ Future<List<File>> pickimages() async {
   List<File> images = [];
 
   try {
-    var file = await FilePicker.platform.pickFiles(
+    var files = await FilePicker.platform.pickFiles(
       allowMultiple: true,
+      type: FileType.image,
     );
-    if (file != null && file.files.isNotEmpty) {
-      for (int i = 0; i < file.files.length; i++) {
-        images.add(File(file.files[i].path!));
+    if (files != null && files.files.isNotEmpty) {
+      for (int i = 0; i < files.files.length; i++) {
+        images.add(File(files.files[i].path!));
         debugPrint(images.toString());
       }
     }
@@ -28,5 +29,6 @@ Future<List<File>> pickimages() async {
     debugPrint(e.toString());
   }
 
+  debugPrint(images.toString());
   return images;
 }
