@@ -7,9 +7,9 @@ class Products {
   final String productName;
   final String description;
   final String category;
-  final double quantity;
-  final double price;
-  final List<String> images;
+  final int quantity;
+  final int price;
+  final List<String> imageUrls;
   Products({
     this.id,
     required this.productName,
@@ -17,7 +17,7 @@ class Products {
     required this.category,
     required this.quantity,
     required this.price,
-    required this.images,
+    required this.imageUrls,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,7 +28,7 @@ class Products {
       'category': category,
       'quantity': quantity,
       'price': price,
-      'images': images,
+      'images': imageUrls,
     };
   }
 
@@ -38,10 +38,10 @@ class Products {
       productName: map['productName'] as String,
       description: map['description'] as String,
       category: map['category'] as String,
-      quantity: map['quantity'] as double,
-      price: map['price'] as double,
-      images: List<String>.from(
-        (map['images'] as List<String>),
+      quantity: map['quantity'] as int,
+      price: map['price'] as int,
+      imageUrls: List<String>.from(
+        (map['images'] as List<dynamic>),
       ),
     );
   }

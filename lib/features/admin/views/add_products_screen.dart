@@ -54,8 +54,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
         context: context,
         productname: productsNameController.text,
         description: descriptionController.text,
-        price: double.parse(priceController.text),
-        quantity: double.parse(quantityController.text),
+        price: int.parse(priceController.text),
+        quantity: int.parse(quantityController.text),
         category: categories,
         images: images,
       );
@@ -114,8 +114,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             return Builder(builder: (BuildContext context) {
                               return Image.file(
                                 i,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                                 height: 200,
+                                width: 200,
                               );
                             });
                           }).toList(),

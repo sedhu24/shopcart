@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:cloudinary_public/cloudinary_public.dart';
@@ -10,28 +12,29 @@ import 'package:shopcart/models/products.dart';
 import 'package:shopcart/providers/user_provider.dart';
 
 class AdminServices {
+// upload products
+
   void sellproducts({
     required BuildContext context,
     required String productname,
     required String description,
-    required double price,
-    required double quantity,
+    required int price,
+    required int quantity,
     required String category,
     required List<File> images,
   }) async {
     final userprovider = Provider.of<UserProvider>(context, listen: false);
     try {
-      final cloudinary = CloudinaryPublic("dfrxv4ssv", "bjw6b69b");
+      final cloudinary = CloudinaryPublic("dfrxv4ssv", "eqzmzzvs");
       late List<String> imagesurl = [];
 
-      for (int i = 0; i < imagesurl.length; i++) {
+      for (int i = 0; i < images.length; i++) {
         CloudinaryResponse res = await cloudinary.uploadFile(
           CloudinaryFile.fromFile(
             images[i].path,
-            folder: productname,
           ),
         );
-        print(res.secureUrl);
+
         imagesurl.add(res.secureUrl);
       }
 
@@ -41,7 +44,7 @@ class AdminServices {
         category: category,
         quantity: quantity,
         price: price,
-        images: imagesurl,
+        imageUrls: imagesurl,
       );
 
       http.Response response =
@@ -66,7 +69,69 @@ class AdminServices {
       );
     } catch (e) {
       showSnackBar(context, e.toString());
-      print("admin services =>");
+      debugPrint("admin services =>");
+      debugPrint(e.toString());
+    }
+  }
+
+// getting all the products
+
+  Future<List<Products>> fetchAllProducts(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    List<Products> productslist = [];
+    try {
+      http.Response res =
+          await http.get(Uri.parse('$uri/admin/getproducts'), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.user.token,
+      });
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            productslist.add(
+              Products.fromJson(
+                jsonEncode(
+                  jsonDecode(res.body)[i],
+                ),
+              ),
+            );
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+
+    return productslist;
+  }
+
+  void delectproduct({
+    required BuildContext context,
+    required Products product,
+    required VoidCallback onSuccess,
+  }) async {
+    final userprovider = Provider.of<UserProvider>(context, listen: false);
+    try {
+      http.Response response =
+          await http.post(Uri.parse("$uri/admin/deleteproducts"),
+              headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'x-auth-token': userprovider.user.token,
+              },
+              body: jsonEncode({"id": product.id}));
+
+      httpErrorHandle(
+        response: response,
+        context: context,
+        onSuccess: () {
+          onSuccess();
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
     }
   }
 }
