@@ -54,7 +54,7 @@ class AddressBox extends StatelessWidget {
               decelerationDuration: const Duration(milliseconds: 500),
               decelerationCurve: Curves.easeOut,
               blankSpace: 10.0,
-              pauseAfterRound: const Duration(seconds: 1),
+              pauseAfterRound: const Duration(seconds: 5),
               startPadding: 10.0,
               text: users.address,
               style: const TextStyle(color: Colors.white),

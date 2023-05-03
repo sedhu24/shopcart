@@ -4,6 +4,7 @@ import 'package:shopcart/features/home/widgets/address_box.dart';
 import 'package:shopcart/features/home/widgets/carousel_image.dart';
 import 'package:shopcart/features/home/widgets/deal_of_the_day.dart';
 import 'package:shopcart/features/home/widgets/top_categories.dart';
+import 'package:shopcart/features/search/screen/search_screen.dart';
 
 import '../../../constants/global_variables.dart';
 
@@ -16,6 +17,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  void navigatetosearchScreen(String query) {
+    Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
+  }
+
   @override
   Widget build(BuildContext context) {
     // user is get from user provider class
@@ -41,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     elevation: 1,
                     borderRadius: BorderRadius.circular(7),
                     child: TextFormField(
+                      onFieldSubmitted: navigatetosearchScreen,
                       decoration: InputDecoration(
                         hintText: "Search ShopCart",
                         hintStyle: const TextStyle(
