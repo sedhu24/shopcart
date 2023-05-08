@@ -13,6 +13,7 @@ class GlobalVariables {
   );
 
   static const secondaryColor = Color.fromARGB(255, 21, 211, 72);
+  static const orangeColor = Color.fromRGBO(255, 153, 0, 1);
   static const backgroundColor = Colors.white;
   static const Color greyBackgroundCOlor = Color(0xffebecee);
   static const selectedNavBarColor = Color.fromARGB(255, 21, 211, 72);

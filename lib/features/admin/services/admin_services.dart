@@ -18,7 +18,7 @@ class AdminServices {
     required BuildContext context,
     required String productname,
     required String description,
-    required int price,
+    required double price,
     required int quantity,
     required String category,
     required List<File> images,

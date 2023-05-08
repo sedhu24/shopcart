@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopcart/common/loader.dart';
 import 'package:shopcart/constants/global_variables.dart';
 import 'package:shopcart/features/home/widgets/address_box.dart';
-import 'package:shopcart/features/search/screen/services/search_services.dart';
+import 'package:shopcart/features/search/services/search_services.dart';
 import 'package:shopcart/features/search/widget/searched_products.dart';
 import 'package:shopcart/models/products.dart';
 
@@ -16,13 +16,14 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<Products>? products;
+  List<Products>? products = [];
 
   final SearchServices searchServices = SearchServices();
   @override
   void initState() {
-    fetchSearchedProduct();
     super.initState();
+    fetchSearchedProduct();
+    debugPrint("product length =>  init ${products!.length}");
   }
 
   void fetchSearchedProduct() async {
@@ -30,7 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
       context: context,
       searchQuery: widget.searchQuery,
     );
-    print(products!.length);
+    debugPrint("product length => ${products!.length}");
     setState(() {});
   }
 
@@ -53,16 +54,15 @@ class _SearchScreenState extends State<SearchScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                         height: 42,
-                        margin: const EdgeInsets.only(left: 15),
                         child: Material(
                           elevation: 1,
                           borderRadius: BorderRadius.circular(7),
                           child: TextFormField(
                             onFieldSubmitted: navigatetosearchScreen,
                             decoration: InputDecoration(
-                              hintText: "Search ShopCart",
+                              hintText: widget.searchQuery,
                               hintStyle: const TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w500),
                               prefixIcon: InkWell(
@@ -121,9 +121,14 @@ class _SearchScreenState extends State<SearchScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(widget.searchQuery),
+                  // Text(widget.searchQuery),
                   Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
+                      separatorBuilder: (context, _) {
+                        return const SizedBox(
+                          height: 5,
+                        );
+                      },
                       itemCount: products!.length,
                       itemBuilder: (context, index) {
                         return products!.isEmpty

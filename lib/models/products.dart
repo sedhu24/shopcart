@@ -8,7 +8,7 @@ class Products {
   final String description;
   final String category;
   final int quantity;
-  final int price;
+  final double price;
   final List<String> imageUrls;
   Products({
     this.id,
@@ -39,7 +39,7 @@ class Products {
       description: map['description'] as String,
       category: map['category'] as String,
       quantity: map['quantity'] as int,
-      price: map['price'] as int,
+      price: map['price'].toDouble() ?? 0.0,
       imageUrls: List<String>.from(
         (map['images'] as List<dynamic>),
       ),
