@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shopcart/common/loader.dart';
 import 'package:shopcart/constants/global_variables.dart';
+import 'package:shopcart/constants/utils.dart';
 import 'package:shopcart/features/home/widgets/address_box.dart';
+import 'package:shopcart/features/product_details/screens/product_details_screen.dart';
 import 'package:shopcart/features/search/services/search_services.dart';
 import 'package:shopcart/features/search/widget/searched_products.dart';
 import 'package:shopcart/models/products.dart';
@@ -36,7 +39,21 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void navigatetosearchScreen(String query) {
-    Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
+    if (query.isEmpty) {
+      showSnackBar(context, "Please enter a product name");
+    } else {
+      Navigator.pushReplacementNamed(
+        context,
+        SearchScreen.routeName,
+        arguments: query,
+      );
+    }
+
+    //  Navigator.pushNamedAndRemoveUntil(
+    //         context,
+    //         UserBottomBar.routeName,
+    //         (route) => false,
+    //       );
   }
 
   @override
@@ -55,50 +72,55 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   Expanded(
                     child: SizedBox(
-                        height: 42,
-                        child: Material(
-                          elevation: 1,
-                          borderRadius: BorderRadius.circular(7),
-                          child: TextFormField(
-                            onFieldSubmitted: navigatetosearchScreen,
-                            decoration: InputDecoration(
-                              hintText: widget.searchQuery,
-                              hintStyle: const TextStyle(
-                                  fontSize: 17, fontWeight: FontWeight.w500),
-                              prefixIcon: InkWell(
-                                onTap: () {},
-                                child: const Padding(
-                                  padding: EdgeInsets.only(left: 6),
-                                  child: Icon(
-                                    Icons.search,
-                                    size: 23,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              contentPadding: const EdgeInsets.only(
-                                top: 10,
-                              ),
-                              enabledBorder: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(7),
-                                ),
-                                borderSide: BorderSide(
-                                  color: Colors.black38,
-                                  width: 1,
-                                ),
-                              ),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(7),
+                      height: 42,
+                      child: Material(
+                        elevation: 1,
+                        borderRadius: BorderRadius.circular(7),
+                        child: TextFormField(
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(
+                                RegExp("[0-9a-zA-Z]"))
+                          ],
+                          onFieldSubmitted: navigatetosearchScreen,
+                          decoration: InputDecoration(
+                            hintText: widget.searchQuery,
+                            hintStyle: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w500),
+                            prefixIcon: InkWell(
+                              onTap: () {},
+                              child: const Padding(
+                                padding: EdgeInsets.only(left: 6),
+                                child: Icon(
+                                  Icons.search,
+                                  size: 23,
+                                  color: Colors.black,
                                 ),
                               ),
                             ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.only(
+                              top: 10,
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(7),
+                              ),
+                              borderSide: BorderSide(
+                                color: Colors.black38,
+                                width: 1,
+                              ),
+                            ),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(7),
+                              ),
+                            ),
                           ),
-                        )),
+                        ),
+                      ),
+                    ),
                   ),
                   Container(
                     color: Colors.transparent,
@@ -134,7 +156,13 @@ class _SearchScreenState extends State<SearchScreen> {
                         return products!.isEmpty
                             ? const Loader()
                             : GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    ProductDetailsScreen.routeName,
+                                    arguments: products![index],
+                                  );
+                                },
                                 child: SearchedProduct(
                                   product: products![index],
                                 ),

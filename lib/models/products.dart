@@ -39,7 +39,7 @@ class Products {
       description: map['description'] as String,
       category: map['category'] as String,
       quantity: map['quantity'] as int,
-      price: map['price'].toDouble() ?? 0.0,
+      price: map['price']?.toDouble() ?? 0.0,
       imageUrls: List<String>.from(
         (map['images'] as List<dynamic>),
       ),

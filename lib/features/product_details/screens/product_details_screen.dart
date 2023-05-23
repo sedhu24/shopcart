@@ -5,6 +5,8 @@ import 'package:shopcart/common/custom_buttom.dart';
 import 'package:shopcart/common/stars.dart';
 import 'package:shopcart/constants/global_variables.dart';
 import 'package:shopcart/common/custom_buttom.dart';
+import 'package:shopcart/constants/utils.dart';
+import 'package:shopcart/features/product_details/services/product_details_services.dart';
 import 'package:shopcart/features/search/screen/search_screen.dart';
 import 'package:shopcart/models/products.dart';
 
@@ -18,8 +20,19 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  final ProductDetailsServices productDetailsServices =
+      ProductDetailsServices();
+
   void navigatetosearchScreen(String query) {
-    Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
+    if (query.isEmpty) {
+      showSnackBar(context, "please enter a product name");
+    } else {
+      Navigator.pushReplacementNamed(
+        context,
+        SearchScreen.routeName,
+        arguments: query,
+      );
+    }
   }
 
   @override
@@ -227,7 +240,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     color: GlobalVariables.orangeColor,
                   );
                 },
-                onRatingUpdate: (rating) {}),
+                onRatingUpdate: (rating) {
+                  productDetailsServices.rateProduct(
+                      context: context,
+                      product: widget.product,
+                      rating: rating);
+                }),
           )
         ]),
       ),

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const adminRouter = require("../routes/admin");
+const ratingScheme = require("./rating");
 
 const productsScheme = mongoose.Schema({
   productName: {
@@ -30,8 +30,24 @@ const productsScheme = mongoose.Schema({
     type: String,
     required: true,
   },
+  ratings: [ratingScheme],
 });
 
 const Products = mongoose.model("Products", productsScheme);
 
 module.exports = Products;
+
+// const mongoose = require("mongoose");
+
+// const ratingScheme = mongoose.Schema({
+//   userId: {
+//     type: String,
+//     required: true,
+//   },
+//   rating: {
+//     type: Number,
+//     required: true,
+//   },
+// });
+
+// module.exports = ratingScheme;

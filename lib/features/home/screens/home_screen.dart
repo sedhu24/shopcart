@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:shopcart/constants/utils.dart';
 
 import 'package:shopcart/features/home/widgets/address_box.dart';
 import 'package:shopcart/features/home/widgets/carousel_image.dart';
@@ -18,7 +20,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   void navigatetosearchScreen(String query) {
-    Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
+    if (query.isEmpty) {
+      showSnackBar(context, "Please enter a product name");
+    } else {
+      Navigator.pushNamed(
+        context,
+        SearchScreen.routeName,
+        arguments: query,
+      );
+    }
+
+    // Navigator.pushNamed(
+    //   context,
+    //   SearchScreen.routeName,
+    //   arguments: query,
+    // );
   }
 
   @override
@@ -46,6 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     elevation: 1,
                     borderRadius: BorderRadius.circular(7),
                     child: TextFormField(
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]"))
+                      ],
                       onFieldSubmitted: navigatetosearchScreen,
                       decoration: InputDecoration(
                         hintText: "Search ShopCart",

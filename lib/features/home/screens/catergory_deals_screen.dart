@@ -34,6 +34,15 @@ class _CategoryDealScreenState extends State<CategoryDealScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var screensize = MediaQuery.of(context).size;
+    double mygridSpacing() {
+      return screensize.width >= 1200
+          ? 30
+          : (screensize.width > 600 && screensize.width < 1200)
+              ? 20
+              : 10;
+    }
+
     final users = Provider.of<UserProvider>(context).user;
     return Scaffold(
       appBar: PreferredSize(
@@ -65,60 +74,74 @@ class _CategoryDealScreenState extends State<CategoryDealScreen> {
                 ),
                 SizedBox(
                   height: 170,
-                  child: GridView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.only(left: 15),
-                      itemCount: productList!.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1,
-                              childAspectRatio: 1.4,
-                              mainAxisSpacing: 10),
-                      itemBuilder: (context, index) {
-                        final product = productList![index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              ProductDetailsScreen.routeName,
-                              arguments: product,
-                            );
-                          },
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 135,
-                                width: 135,
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black12, width: 0.5),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Image.network(product.imageUrls[0]),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                padding: const EdgeInsets.only(
-                                  top: 0,
-                                  left: 15,
-                                ),
-                                child: Text(
-                                  product.productName,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              )
-                            ],
+                  child: productList == null
+                      ? Center(
+                          child: Text(
+                              "No products available for ${widget.category}"),
+                        )
+                      : GridView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.only(left: 15),
+                          itemCount: productList!.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: screensize.width >= 1200
+                                ? 3
+                                : (screensize.width > 600 &&
+                                        screensize.width < 1200)
+                                    ? 2
+                                    : 1,
+                            childAspectRatio: 2,
+                            mainAxisSpacing: mygridSpacing(),
+                            crossAxisSpacing: mygridSpacing(),
                           ),
-                        );
-                      }),
+                          itemBuilder: (context, index) {
+                            final product = productList![index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  ProductDetailsScreen.routeName,
+                                  arguments: product,
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 135,
+                                    width: 135,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.black12, width: 0.5),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child:
+                                            Image.network(product.imageUrls[0]),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    padding: const EdgeInsets.only(
+                                      top: 0,
+                                      left: 15,
+                                    ),
+                                    child: Text(
+                                      product.productName,
+                                      style: TextStyle(fontSize: 12),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                          }),
                 )
               ],
             ),

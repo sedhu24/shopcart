@@ -18,6 +18,12 @@ class SearchServices {
     List<Products> productslist = [];
     try {
       // /api/products/search/:name
+      // if (searchQuery.isEmpty) {
+      //   showSnackBar(context, "Please enter Product");
+      // } else {
+
+      // }
+
       http.Response res = await http
           .get(Uri.parse('$uri/api/products/search/$searchQuery'), headers: {
         'Content-Type': 'application/json; charset=UTF-8',

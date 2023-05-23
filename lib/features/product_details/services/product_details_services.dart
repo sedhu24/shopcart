@@ -13,21 +13,22 @@ class ProductDetailsServices {
   void rateProduct({
     required BuildContext context,
     required Products product,
-    required int rating,
+    required double rating,
   }) async {
     final userprovider = Provider.of<UserProvider>(context, listen: false);
 
     try {
-      http.Response response =
-          await http.post(Uri.parse("$uri/api/rate-product"),
-              headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-                'x-auth-token': userprovider.user.token,
-              },
-              body: jsonEncode({
-                'id': product,
-                'rating': rating,
-              }));
+      http.Response response = await http.post(
+        Uri.parse("$uri/api/rate-product"),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userprovider.user.token,
+        },
+        body: jsonEncode({
+          'id': product.id!,
+          'rating': rating,
+        }),
+      );
 
       httpErrorHandle(
         response: response,
