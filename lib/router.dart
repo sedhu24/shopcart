@@ -5,7 +5,9 @@ import 'package:shopcart/features/auth/screens/auth_screen.dart';
 import 'package:shopcart/features/cart/screens/cart_screen.dart';
 import 'package:shopcart/features/home/screens/catergory_deals_screen.dart';
 import 'package:shopcart/features/home/screens/home_screen.dart';
+import 'package:shopcart/features/product_details/screens/product_details_screen.dart';
 import 'package:shopcart/features/search/screen/search_screen.dart';
+import 'package:shopcart/models/products.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -53,6 +55,14 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         settings: routeSettings,
         builder: (_) => SearchScreen(
           searchQuery: searchQuery,
+        ),
+      );
+    case ProductDetailsScreen.routeName:
+      var product = routeSettings.arguments as Products;
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => ProductDetailsScreen(
+          product: product,
         ),
       );
 

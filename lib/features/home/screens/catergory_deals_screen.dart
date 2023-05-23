@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shopcart/common/loader.dart';
 import 'package:shopcart/constants/global_variables.dart';
 import 'package:shopcart/features/home/services/home_services.dart';
+import 'package:shopcart/features/product_details/screens/product_details_screen.dart';
 import 'package:shopcart/models/products.dart';
 import 'package:shopcart/providers/user_provider.dart';
 
@@ -75,34 +76,47 @@ class _CategoryDealScreenState extends State<CategoryDealScreen> {
                               mainAxisSpacing: 10),
                       itemBuilder: (context, index) {
                         final product = productList![index];
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: 130,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.black12, width: 0.5),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              ProductDetailsScreen.routeName,
+                              arguments: product,
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 135,
+                                width: 135,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.black12, width: 0.5),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Image.network(product.imageUrls[0]),
+                                  ),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Image.network(product.imageUrls[0]),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                alignment: Alignment.topLeft,
+                                padding: const EdgeInsets.only(
+                                  top: 0,
+                                  left: 15,
                                 ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.topLeft,
-                              padding: const EdgeInsets.only(
-                                top: 0,
-                                right: 15,
-                              ),
-                              child: Text(
-                                product.productName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            )
-                          ],
+                                child: Text(
+                                  product.productName,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
+                            ],
+                          ),
                         );
                       }),
                 )

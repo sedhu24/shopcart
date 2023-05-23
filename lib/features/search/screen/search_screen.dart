@@ -133,8 +133,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       itemBuilder: (context, index) {
                         return products!.isEmpty
                             ? const Loader()
-                            : SearchedProduct(
-                                product: products![index],
+                            : GestureDetector(
+                                onTap: () {},
+                                child: SearchedProduct(
+                                  product: products![index],
+                                ),
                               );
                       },
                     ),
