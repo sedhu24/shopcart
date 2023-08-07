@@ -1,14 +1,16 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:shopcart/common/custom_buttom.dart';
 import 'package:shopcart/common/stars.dart';
 import 'package:shopcart/constants/global_variables.dart';
-import 'package:shopcart/common/custom_buttom.dart';
+
 import 'package:shopcart/constants/utils.dart';
 import 'package:shopcart/features/product_details/services/product_details_services.dart';
 import 'package:shopcart/features/search/screen/search_screen.dart';
 import 'package:shopcart/models/products.dart';
+import 'package:shopcart/providers/user_provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   static const String routeName = '/product-details-screen';
@@ -22,6 +24,28 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   final ProductDetailsServices productDetailsServices =
       ProductDetailsServices();
+
+  double avgRating = 0;
+  double myRating = 0;
+
+// calculate rating
+  @override
+  void initState() {
+    super.initState();
+    double totalRating = 0;
+    for (int i = 0; i < widget.product.rating!.length; i++) {
+      totalRating += widget.product.rating![i].rating;
+
+      if (widget.product.rating![i].userId ==
+          Provider.of<UserProvider>(context, listen: false).user.id) {
+        myRating = widget.product.rating![i].rating;
+      }
+    }
+
+    if (totalRating != 0) {
+      avgRating = totalRating / widget.product.rating!.length;
+    }
+  }
 
   void navigatetosearchScreen(String query) {
     if (query.isEmpty) {
@@ -51,7 +75,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             Expanded(
               child: Container(
                   height: 42,
-                  margin: const EdgeInsets.only(left: 15),
+                  // margin: const EdgeInsets.only(left: 10),
                   child: Material(
                     elevation: 1,
                     borderRadius: BorderRadius.circular(7),
@@ -115,7 +139,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Container(
               alignment: Alignment.topRight,
-              child: const Stars(rating: 4.5),
+              child: Stars(rating: avgRating),
             ),
 
             // child: Row(
@@ -228,7 +252,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             child: RatingBar.builder(
                 glow: false,
                 // glowColor: GlobalVariables.orangeColor,
-                initialRating: 0,
+                initialRating: myRating,
                 minRating: 1,
                 itemCount: 5,
                 itemPadding: const EdgeInsets.symmetric(horizontal: 4),

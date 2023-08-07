@@ -36,18 +36,3 @@ const productsScheme = mongoose.Schema({
 const Products = mongoose.model("Products", productsScheme);
 
 module.exports = Products;
-
-// const mongoose = require("mongoose");
-
-// const ratingScheme = mongoose.Schema({
-//   userId: {
-//     type: String,
-//     required: true,
-//   },
-//   rating: {
-//     type: Number,
-//     required: true,
-//   },
-// });
-
-// module.exports = ratingScheme;

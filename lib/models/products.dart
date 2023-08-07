@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:shopcart/models/rating.dart';
+
 class Products {
   final String? id;
 
@@ -10,6 +12,7 @@ class Products {
   final int quantity;
   final double price;
   final List<String> imageUrls;
+  final List<Rating>? rating;
   Products({
     this.id,
     required this.productName,
@@ -18,6 +21,7 @@ class Products {
     required this.quantity,
     required this.price,
     required this.imageUrls,
+    this.rating,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,6 +33,7 @@ class Products {
       'quantity': quantity,
       'price': price,
       'images': imageUrls,
+      'rating': rating,
     };
   }
 
@@ -43,6 +48,13 @@ class Products {
       imageUrls: List<String>.from(
         (map['images'] as List<dynamic>),
       ),
+      rating: map['ratings'] != null
+          ? List<Rating>.from(
+              map['ratings']?.map(
+                (x) => Rating.fromMap(x),
+              ),
+            )
+          : null,
     );
   }
 
