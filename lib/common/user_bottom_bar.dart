@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shopcart/constants/global_variables.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:shopcart/features/account/screens/account_screen.dart';
 import 'package:shopcart/features/cart/screens/cart_screen.dart';
+import 'package:shopcart/providers/user_provider.dart';
 import '../features/home/screens/home_screen.dart';
 
 class UserBottomBar extends StatefulWidget {
@@ -33,6 +35,8 @@ class _UserBottomBarState extends State<UserBottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    // short syntax for provider of context
+    final userCartLen = context.watch<UserProvider>().user.cart.length;
     return Scaffold(
       body: screens[page],
       bottomNavigationBar: BottomNavigationBar(
@@ -92,8 +96,8 @@ class _UserBottomBarState extends State<UserBottomBar> {
                           : GlobalVariables.backgroundColor),
                 ),
               ),
-              child: const badges.Badge(
-                badgeContent: Text("2"),
+              child: badges.Badge(
+                badgeContent: Text(userCartLen.toString()),
                 badgeStyle:
                     badges.BadgeStyle(elevation: 0, badgeColor: Colors.white),
                 child: Icon(Icons.shopping_cart_outlined),

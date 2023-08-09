@@ -7,6 +7,7 @@ const cors = require("cors");
 const authRouter = require("./routes/auth");
 const adminRouter = require("./routes/admin");
 const productRouter = require("./routes/product");
+const userRouter = require("./routes/user");
 // InIt
 const PORT = 3000;
 const DB =
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(cors());
 app.use(authRouter);
 app.use(adminRouter);
+app.use(userRouter);
 app.use(productRouter);
 // CLIENT -> MidleWare -> Server -> CLIENT
 
