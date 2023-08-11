@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shopcart/common/custom_buttom.dart';
 import 'package:shopcart/constants/global_variables.dart';
+import 'package:shopcart/features/cart/widgets/cart_product.dart';
 import 'package:shopcart/features/cart/widgets/cart_subtotal.dart';
 import 'package:shopcart/features/home/widgets/address_box.dart';
 import 'package:shopcart/features/search/screen/search_screen.dart';
@@ -132,6 +133,12 @@ class _CartScreenState extends State<CartScreen> {
           const SizedBox(
             height: 5,
           ),
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: user.cart.length,
+              itemBuilder: (context, index) {
+                return CartProduct(index: index);
+              })
         ]),
       ),
     );
