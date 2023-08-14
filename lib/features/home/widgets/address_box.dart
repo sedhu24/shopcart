@@ -25,41 +25,47 @@ class AddressBox extends StatelessWidget {
         //   stops: [0.5, 1.0],
         // ),
       ),
-      padding: EdgeInsets.only(left: 10),
+      padding: const EdgeInsets.only(left: 10),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Icon(
-            Icons.location_on_outlined,
-            size: 20,
-            color: Colors.white,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 5),
-            child:
-                // Marquee(text: "Deliver to ${users.name} : ${users.address}")
-
-                Text(
-              "Deliver to ${users.name} : ",
-              style: const TextStyle(
+          Row(
+            children: const [
+              Icon(
+                Icons.location_on_outlined,
+                size: 20,
                 color: Colors.white,
-                fontWeight: FontWeight.w500,
-                overflow: TextOverflow.ellipsis,
               ),
-            ),
+              Padding(
+                padding: EdgeInsets.only(left: 5),
+                child:
+                    // Marquee(text: "Deliver to ${users.name} : ${users.address}")
+
+                    Text(
+                  "Deliver to  : ",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: Marquee(
-              accelerationDuration: const Duration(seconds: 1),
-              accelerationCurve: Curves.linear,
-              decelerationDuration: const Duration(milliseconds: 500),
-              decelerationCurve: Curves.easeOut,
-              blankSpace: 10.0,
-              pauseAfterRound: const Duration(seconds: 5),
-              startPadding: 10.0,
-              text: users.address,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
+
+          // Expanded(
+          //   child: Marquee(
+          //     accelerationDuration: const Duration(seconds: 1),
+          //     accelerationCurve: Curves.linear,
+          //     decelerationDuration: const Duration(milliseconds: 500),
+          //     decelerationCurve: Curves.easeOut,
+          //     blankSpace: 10.0,
+          //     pauseAfterRound: const Duration(seconds: 5),
+          //     startPadding: 10.0,
+          //     text: "",
+          //     style: const TextStyle(color: Colors.white),
+          //   ),
+          // ),
           const Padding(
             padding: EdgeInsets.only(
               left: 2,

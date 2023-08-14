@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shopcart/common/custom_buttom.dart';
 import 'package:shopcart/constants/global_variables.dart';
+import 'package:shopcart/features/address/screen/address_screen.dart';
 import 'package:shopcart/features/cart/widgets/cart_product.dart';
 import 'package:shopcart/features/cart/widgets/cart_subtotal.dart';
 import 'package:shopcart/features/home/widgets/address_box.dart';
@@ -29,9 +30,21 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
+  void navigatetoaddressScreen(int sum) {
+    Navigator.pushNamed(
+      context,
+      AddressScreen.routeName,
+      arguments: sum.toString(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
+    int sum = 0;
+    user.cart
+        .map((e) => sum += e["quantity"] * e["product"]["price"] as int)
+        .toList();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
@@ -120,7 +133,8 @@ class _CartScreenState extends State<CartScreen> {
               textColor: Colors.black,
               text: 'Proceed to Buy (${user.cart.length} items)',
               backgroundcolor: GlobalVariables.orangeColor,
-              onTap: () {},
+              fontWeight: FontWeight.bold,
+              onTap: () => navigatetoaddressScreen(sum),
             ),
           ),
           const SizedBox(
