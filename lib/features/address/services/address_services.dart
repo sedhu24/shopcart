@@ -80,7 +80,9 @@ class AddressServices {
         context: context,
         onSuccess: () {
           showSnackBar(context, "Your order has been placed");
-          User user = userProvider.user.copyWith(cart: []);
+          User user = userProvider.user.copyWith(
+            cart: [],
+          );
           userProvider.setUserFromProvider(user);
         },
       );

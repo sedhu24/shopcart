@@ -3,6 +3,20 @@ var express = require("express");
 const adminRouter = express.Router();
 const admin = require("../middlewares/admin");
 const { Product } = require("../models/product");
+const Order = require("../models/order");
+
+// list Orders
+
+adminRouter.get("/admin/get-orders", admin, async (req, res) => {
+  try {
+    console.log("admin => Route => get-orders ");
+    const order = await Order.find({});
+    res.json(order);
+  } catch (error) {
+    console.log("admin => Route => get-orders ");
+    res.status(500).json({ error: e.message });
+  }
+});
 
 // upload products
 adminRouter.post("/admin/addproducts", admin, async (req, res) => {

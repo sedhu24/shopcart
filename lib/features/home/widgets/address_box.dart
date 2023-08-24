@@ -52,20 +52,21 @@ class AddressBox extends StatelessWidget {
               ),
             ],
           ),
-
-          // Expanded(
-          //   child: Marquee(
-          //     accelerationDuration: const Duration(seconds: 1),
-          //     accelerationCurve: Curves.linear,
-          //     decelerationDuration: const Duration(milliseconds: 500),
-          //     decelerationCurve: Curves.easeOut,
-          //     blankSpace: 10.0,
-          //     pauseAfterRound: const Duration(seconds: 5),
-          //     startPadding: 10.0,
-          //     text: "",
-          //     style: const TextStyle(color: Colors.white),
-          //   ),
-          // ),
+          users.address.isEmpty
+              ? const SizedBox()
+              : Expanded(
+                  child: Marquee(
+                    accelerationDuration: const Duration(seconds: 1),
+                    accelerationCurve: Curves.linear,
+                    decelerationDuration: const Duration(milliseconds: 500),
+                    decelerationCurve: Curves.easeOut,
+                    blankSpace: 10.0,
+                    pauseAfterRound: const Duration(seconds: 5),
+                    startPadding: 10.0,
+                    text: users.address,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
           const Padding(
             padding: EdgeInsets.only(
               left: 2,

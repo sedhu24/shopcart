@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopcart/constants/global_variables.dart';
+import 'package:shopcart/features/admin/views/order_screen.dart';
 import 'package:shopcart/features/admin/views/post_screen.dart';
 
 class AdminScreen extends StatefulWidget {
@@ -21,11 +22,7 @@ class _AdminScreenState extends State<AdminScreen> {
         'Analytics  Page',
       ),
     ),
-    const Center(
-      child: Text(
-        'Orders page',
-      ),
-    ),
+    const OrderScreen()
   ];
 
   void updatePage(int selectedpage) {

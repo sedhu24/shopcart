@@ -124,35 +124,56 @@ class _CartScreenState extends State<CartScreen> {
         child: Column(children: [
           const AddressBox(),
           const CartSubtotal(),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 10,
-            ),
-            child: CustomButton(
-              textColor: Colors.black,
-              text: 'Proceed to Buy (${user.cart.length} items)',
-              backgroundcolor: GlobalVariables.orangeColor,
-              fontWeight: FontWeight.bold,
-              onTap: () => navigatetoaddressScreen(sum),
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Container(
-            color: Colors.black.withOpacity(0.08),
-            height: 1,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: user.cart.length,
-              itemBuilder: (context, index) {
-                return CartProduct(index: index);
-              })
+          user.cart.isEmpty
+              ? Container(
+                  margin: const EdgeInsets.only(top: 40),
+                  child: Column(
+                    children: const [
+                      Icon(
+                        Icons.shopping_cart_outlined,
+                        color: Colors.black12,
+                        size: 40,
+                      ),
+                      Text(
+                        "No items in cart",
+                        style: TextStyle(fontSize: 20, color: Colors.black12),
+                      ),
+                    ],
+                  ),
+                )
+              : Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      child: CustomButton(
+                        textColor: Colors.black,
+                        text: 'Proceed to Buy (${user.cart.length} items)',
+                        backgroundcolor: GlobalVariables.orangeColor,
+                        fontWeight: FontWeight.bold,
+                        onTap: () => navigatetoaddressScreen(sum),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      color: Colors.black.withOpacity(0.08),
+                      height: 1,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: user.cart.length,
+                        itemBuilder: (context, index) {
+                          return CartProduct(index: index);
+                        })
+                  ],
+                ),
         ]),
       ),
     );

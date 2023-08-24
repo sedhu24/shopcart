@@ -14,26 +14,50 @@ import 'package:http/http.dart' as http;
 class AccountServices {
   // /api/orders/my
 
-  void fetchmyOrders({
+  Future<List<Order>> fetchmyOrders({
     required BuildContext context,
   }) async {
     final userprovider = Provider.of<UserProvider>(context, listen: false);
     List<Order> orderList = [];
     try {
       http.Response response = await http.get(
-        Uri.parse("$uri//api/orders/my"),
+        Uri.parse("$uri/api/orders/my"),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userprovider.user.token,
         },
       );
 
+      // httpErrorHandle(
+      //   response: response,
+      //   context: context,
+      //   onSuccess: () {
+      //     debugPrint("account services => 35");
+      //     for (int i = 0; i < jsonDecode(response.body).length; i++) {
+      //       debugPrint("account services => 37");
+
+      // orderList.add( Order.fromJson( jsonEncode( jsonDecode( response.body[i], ), ), ), );
+
+      //       debugPrint(
+      //           "${Order.fromJson(jsonEncode(jsonDecode(response.body.toString())))}");
+      //     }
+      //   },
+      // );
+
       httpErrorHandle(
         response: response,
         context: context,
         onSuccess: () {
           for (int i = 0; i < jsonDecode(response.body).length; i++) {
-            // orderList.add()
+            orderList.add(
+              Order.fromJson(
+                jsonEncode(
+                  jsonDecode(
+                    response.body,
+                  )[i],
+                ),
+              ),
+            );
           }
         },
       );
@@ -42,5 +66,6 @@ class AccountServices {
       debugPrint("admin services =>");
       debugPrint(e.toString());
     }
+    return orderList;
   }
 }

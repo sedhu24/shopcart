@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:shopcart/common/custom_buttom.dart';
 import 'package:shopcart/constants/global_variables.dart';
 import 'package:shopcart/constants/utils.dart';
 import 'package:shopcart/features/search/screen/search_screen.dart';
 import 'package:shopcart/models/order.dart';
 import 'package:intl/intl.dart';
+import 'package:shopcart/providers/user_provider.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   static const String routeName = '/order-details-screen';
@@ -32,13 +35,13 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   @override
   void initState() {
-    print(widget.order.status);
     currentStep = widget.order.status;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
@@ -244,7 +247,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
                 child: Stepper(
                   controlsBuilder: (context, details) {
-                    return const SizedBox();
+                    if (user.type == "admin") {
+                      return CustomButton(
+                        text: "Done",
+                        onTap: () {},
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
                   },
                   steps: [
                     Step(

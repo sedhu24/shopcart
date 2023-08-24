@@ -6,8 +6,10 @@ import 'package:shopcart/features/auth/screens/auth_screen.dart';
 import 'package:shopcart/features/cart/screens/cart_screen.dart';
 import 'package:shopcart/features/home/screens/catergory_deals_screen.dart';
 import 'package:shopcart/features/home/screens/home_screen.dart';
+import 'package:shopcart/features/order_details/screens/order_details_screen.dart';
 import 'package:shopcart/features/product_details/screens/product_details_screen.dart';
 import 'package:shopcart/features/search/screen/search_screen.dart';
+import 'package:shopcart/models/order.dart';
 import 'package:shopcart/models/products.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -93,6 +95,16 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         settings: routeSettings,
         builder: (_) => AddressScreen(
           totalAmount: totalamount,
+        ),
+      );
+
+    // OrderdetailsScreen
+    case OrderDetailsScreen.routeName:
+      var order = routeSettings.arguments as Order;
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => OrderDetailsScreen(
+          order: order,
         ),
       );
 

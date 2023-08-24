@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:pay/pay.dart';
 import 'package:provider/provider.dart';
-import 'package:shopcart/common/custom_buttom.dart';
 import 'package:shopcart/common/custom_textfiel.dart';
-import 'package:shopcart/common/loader.dart';
 import 'package:shopcart/constants/global_variables.dart';
 import 'package:shopcart/constants/utils.dart';
+import 'package:shopcart/features/address/services/address_services.dart';
 import 'package:shopcart/providers/user_provider.dart';
 
 class AddressScreen extends StatefulWidget {
@@ -26,13 +26,17 @@ class _AddressScreenState extends State<AddressScreen> {
 
   String adddressToBeUsed = '';
 
-  // late final Future<PaymentConfiguration> _googlePayConfigure;
+  final AddressServices addressServices = AddressServices();
 
+  // final Future<PaymentConfiguration> _googlePayConfigure =
+  //     PaymentConfiguration.fromAsset('gpay.json');
+
+  // final Future<PaymentConfiguration> _googlePayConfigurejson =
+  //     PaymentConfiguration.fromAsset('gpay.json');
   List<PaymentItem> paymentItems = [];
 
   @override
   void initState() {
-    // _googlePayConfigure = PaymentConfiguration.fromAsset("gpay.json");
     paymentItems.add(
       PaymentItem(
         amount: widget.totalAmount,
@@ -52,8 +56,35 @@ class _AddressScreenState extends State<AddressScreen> {
     citycontroller.dispose();
   }
 
-  void ongpayresult(res) {}
-  void onapplepayresult(res) {}
+  void ongpayresult(res) {
+    if (Provider.of<UserProvider>(context, listen: false)
+        .user
+        .address
+        .isEmpty) {
+      addressServices.saveUserAddress(
+          context: context, address: adddressToBeUsed);
+    }
+    addressServices.placeOrder(
+      context: context,
+      address: adddressToBeUsed,
+      totalsum: double.parse(widget.totalAmount),
+    );
+  }
+
+  void onapplepayresult(res) {
+    if (Provider.of<UserProvider>(context, listen: false)
+        .user
+        .address
+        .isEmpty) {
+      addressServices.saveUserAddress(
+          context: context, address: adddressToBeUsed);
+    }
+    addressServices.placeOrder(
+      context: context,
+      address: adddressToBeUsed,
+      totalsum: double.parse(widget.totalAmount),
+    );
+  }
 
   // Finalizing  the address to buy   addrestobeused  = address from provider or from form
 
@@ -69,13 +100,38 @@ class _AddressScreenState extends State<AddressScreen> {
       if (_addressFormKey.currentState!.validate()) {
         adddressToBeUsed =
             '${flatBuildingcontroller.text}, ${areacontroller.text}, ${citycontroller.text} - ${pincodecontroller.text}';
+        if (Provider.of<UserProvider>(context, listen: false)
+            .user
+            .address
+            .isEmpty) {
+          addressServices.saveUserAddress(
+              context: context, address: adddressToBeUsed);
+        }
+        addressServices.placeOrder(
+          context: context,
+          address: adddressToBeUsed,
+          totalsum: double.parse(widget.totalAmount),
+        );
       } else {
         throw Exception("Please enter all the values! ");
       }
     } else if (addressFromProvider.isNotEmpty) {
       adddressToBeUsed = addressFromProvider;
+      if (Provider.of<UserProvider>(context, listen: false)
+          .user
+          .address
+          .isEmpty) {
+        addressServices.saveUserAddress(
+            context: context, address: adddressToBeUsed);
+      }
+      addressServices.placeOrder(
+        context: context,
+        address: adddressToBeUsed,
+        totalsum: double.parse(widget.totalAmount),
+      );
     } else {
       showSnackBar(context, 'Error');
+      // throw Exception("Error");
     }
   }
 
@@ -132,6 +188,7 @@ class _AddressScreenState extends State<AddressScreen> {
                   ],
                 ),
               Form(
+                // autovalidateMode: AutovalidateMode.onUserInteraction,
                 key: _addressFormKey,
                 child: Column(
                   children: [
@@ -150,15 +207,15 @@ class _AddressScreenState extends State<AddressScreen> {
                       height: 10,
                     ),
                     CustomTextfield(
-                      controller: pincodecontroller,
-                      hint: "Pincode",
+                      controller: citycontroller,
+                      hint: "Town/City",
                     ),
                     const SizedBox(
                       height: 10,
                     ),
                     CustomTextfield(
-                      controller: citycontroller,
-                      hint: "Town/City",
+                      controller: pincodecontroller,
+                      hint: "Pincode",
                     ),
                     const SizedBox(
                       height: 20,
@@ -166,43 +223,97 @@ class _AddressScreenState extends State<AddressScreen> {
                   ],
                 ),
               ),
-              GooglePayButton(
-                width: double.infinity,
-                height: 50,
-                onPressed: () => payPressed(address),
-                margin: const EdgeInsets.only(top: 15),
-                type: GooglePayButtonType.buy,
-                paymentConfigurationAsset: 'gpay.json',
-                onPaymentResult: ongpayresult,
-                paymentItems: paymentItems,
-                loadingIndicator: const Loader(),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ApplePayButton(
-                width: double.infinity,
-                height: 50,
-                onPressed: () => payPressed(address),
-                margin: const EdgeInsets.only(top: 15),
-                style: ApplePayButtonStyle.whiteOutline,
-                type: ApplePayButtonType.buy,
-                paymentConfigurationAsset: 'apple.json',
-                onPaymentResult: onapplepayresult,
-                paymentItems: paymentItems,
-                loadingIndicator: const Loader(),
-              ),
+
+              InkWell(
+                highlightColor: GlobalVariables.orangeColor,
+                borderRadius: BorderRadius.circular(50),
+                onTap: () {
+                  payPressed(address);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black12,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  width: double.infinity,
+                  height: 50,
+                  child: const Text(
+                    "Cash on Delivery",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              )
+
+// From Json
+              // Container(
+              //   margin: const EdgeInsets.symmetric(
+              //     horizontal: 10,
+              //   ),
+              //   width: double.infinity,
+              //   height: 50,
+              //   decoration: BoxDecoration(
+              //       border: Border.all(
+              //         color: Colors.white,
+              //         width: 0.0,
+              //       ),
+              //       borderRadius: BorderRadius.circular(50),
+              //       color: Colors.white),
+              //   child: OutlinedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       foregroundColor: GlobalVariables.orangeColor,
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(50),
+              //       ),
+              //     ),
+              //     onPressed: () {
+              //       payPressed(address);
+              //     },
+              //     child: const Text(
+              //       "Cash on Delivery",
+              //       style: TextStyle(
+              //         color: Colors.black,
+              //         fontSize: 20,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+
+              // GooglePayButton(
+              //   width: double.infinity,
+              //   height: 50,
+              //   paymentConfiguration: PaymentConfiguration.fromJsonString(
+              //       payment_configuration.defaultGooglePay),
+              //   onPressed: () => payPressed(address),
+              //   margin: const EdgeInsets.only(top: 15),
+              //   type: GooglePayButtonType.buy,
+              //   onPaymentResult: ongpayresult,
+              //   paymentItems: paymentItems,
+              //   loadingIndicator: const Loader(),
+              // ),
+
+              // From Asset
 
               // FutureBuilder<PaymentConfiguration>(
-              //     builder: (context, snapshot) => snapshot.hasData
-              //         ? GooglePayButton(
-              //             paymentConfiguration: snapshot.data!,
-              //             type: GooglePayButtonType.buy,
-              //             onPaymentResult: ongpayresult,
-              //             paymentItems: paymentItems,
-              //             loadingIndicator: const Center(child: Loader()),
-              //           )
-              //         : const SizedBox.shrink(),)
+              //   future: _googlePayConfigure,
+              //   builder: (context, snapshot) => snapshot.hasData
+              //       ? GooglePayButton(
+              //           paymentConfiguration: snapshot.data!,
+              //           type: GooglePayButtonType.buy,
+              //           width: double.infinity,
+              //           height: 50,
+              //           onPressed: () => payPressed(address),
+              //           onPaymentResult: ongpayresult,
+              //           paymentItems: paymentItems,
+              //           // loadingIndicator: const Center(child: Loader()),
+              //         )
+              //       : const SizedBox.shrink(),
+              // )
             ],
           ),
         ),

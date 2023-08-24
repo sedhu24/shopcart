@@ -22,7 +22,7 @@ const orderScheme = mongoose.Schema({
   },
   userId: {
     required: true,
-    type: Number,
+    type: String,
   },
   orderedAt: {
     type: Number,

@@ -98,9 +98,9 @@ class _UserBottomBarState extends State<UserBottomBar> {
               ),
               child: badges.Badge(
                 badgeContent: Text(userCartLen.toString()),
-                badgeStyle:
-                    badges.BadgeStyle(elevation: 0, badgeColor: Colors.white),
-                child: Icon(Icons.shopping_cart_outlined),
+                badgeStyle: const badges.BadgeStyle(
+                    elevation: 0, badgeColor: Colors.white),
+                child: const Icon(Icons.shopping_cart_outlined),
               ),
             ),
           ),

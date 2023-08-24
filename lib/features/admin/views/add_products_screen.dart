@@ -196,6 +196,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: DropdownButton(
+                    alignment: Alignment.topRight,
                     value: categories,
                     icon: const Icon(
                       Icons.keyboard_arrow_down,
