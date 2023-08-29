@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shopcart/common/custom_buttom.dart';
 import 'package:shopcart/constants/global_variables.dart';
 import 'package:shopcart/constants/utils.dart';
+import 'package:shopcart/features/admin/services/admin_services.dart';
 import 'package:shopcart/features/search/screen/search_screen.dart';
 import 'package:shopcart/models/order.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +20,14 @@ class OrderDetailsScreen extends StatefulWidget {
 }
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+  final AdminServices adminServices = AdminServices();
   int currentStep = 0;
+
+  @override
+  void initState() {
+    currentStep = widget.order.status;
+    super.initState();
+  }
 
   void navigatetosearchScreen(String query) {
     if (query.isEmpty) {
@@ -33,10 +41,18 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     }
   }
 
-  @override
-  void initState() {
-    currentStep = widget.order.status;
-    super.initState();
+// Only For Admin
+  void changeOrderStatus(int status) {
+    adminServices.changeOrderSttus(
+      context: context,
+      status: status += 1,
+      order: widget.order,
+      onSuccess: () {
+        setState(() {
+          currentStep += 1;
+        });
+      },
+    );
   }
 
   @override
@@ -246,15 +262,18 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   ),
                 ),
                 child: Stepper(
+                  currentStep: currentStep,
                   controlsBuilder: (context, details) {
-                    if (user.type == "admin") {
-                      return CustomButton(
-                        text: "Done",
-                        onTap: () {},
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
+                    return user.type == "admin"
+                        ? CustomButton(
+                            text: "Done",
+                            backgroundcolor: Colors.redAccent,
+                            onTap: () {
+                              print(details.currentStep);
+                              changeOrderStatus(details.currentStep);
+                              print(details.currentStep);
+                            })
+                        : const SizedBox();
                   },
                   steps: [
                     Step(
@@ -264,7 +283,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       isActive: currentStep > 0,
                       state: currentStep > 0
                           ? StepState.complete
-                          : StepState.disabled,
+                          : StepState.indexed,
                     ),
                     Step(
                         title: const Text("Completed"),
@@ -273,7 +292,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         isActive: currentStep > 1,
                         state: currentStep > 1
                             ? StepState.complete
-                            : StepState.disabled),
+                            : StepState.indexed),
                     Step(
                         title: const Text("Received"),
                         content: const Text(
@@ -281,14 +300,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         isActive: currentStep > 2,
                         state: currentStep > 2
                             ? StepState.complete
-                            : StepState.disabled),
+                            : StepState.indexed),
                     Step(
                         title: const Text("Deliverd"),
                         content: const Text("Your order has been completed"),
                         isActive: currentStep >= 3,
                         state: currentStep >= 3
                             ? StepState.complete
-                            : StepState.disabled),
+                            : StepState.indexed),
                   ],
                 ),
               ),

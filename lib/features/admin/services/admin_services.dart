@@ -176,22 +176,35 @@ class AdminServices {
   }) async {
     final userprovider = Provider.of<UserProvider>(context, listen: false);
     try {
+      debugPrint("admin services => order => change status = 179");
       http.Response response =
           await http.post(Uri.parse("$uri/admin/change-order-status"),
               headers: {
                 'Content-Type': 'application/json; charset=UTF-8',
                 'x-auth-token': userprovider.user.token,
               },
-              body: jsonEncode({"id": order.id}));
+              body: jsonEncode({
+                "id": order.id,
+                "status": status,
+              }));
+
+      debugPrint("admin services => order => change status => 191");
 
       httpErrorHandle(
         response: response,
         context: context,
-        onSuccess: () {
-          onSuccess();
-        },
+        onSuccess: () => onSuccess,
       );
+      // httpErrorHandle(
+      //   response: response,
+      //   context: context,
+      //   onSuccess: () {
+      //     onSuccess();
+      //   },
+      // );
     } catch (e) {
+      debugPrint("admin services => order => change status");
+      debugPrint(e.toString());
       showSnackBar(context, e.toString());
     }
   }

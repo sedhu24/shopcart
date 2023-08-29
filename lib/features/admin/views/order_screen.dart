@@ -13,7 +13,7 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  List<Order>? orders;
+  List<Order>? orderlist;
   final AdminServices adminServices = AdminServices();
 
   @override
@@ -23,77 +23,79 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   fetchAllOrders() async {
-    orders = await adminServices.fetchAllOrders(context);
+    orderlist = await adminServices.fetchAllOrders(context);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return orders == null
+    return orderlist == null
         ? const Loader()
-        : GridView.builder(
-            itemCount: orders!.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisExtent: 200,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                crossAxisCount: 2),
-            itemBuilder: ((context, index) {
-              final orderdata = orders![index];
-              return GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, OrderDetailsScreen.routeName,
-                      arguments: orderdata);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 5,
-                            spreadRadius: 1,
-                            offset: Offset(4, 4)),
-                      ],
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Colors.black12)),
-                  child: (Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        height: 140,
-                        child: SingleProduct(
-                          image: orderdata.products[0].imageUrls[0],
+        : Scaffold(
+            body: GridView.builder(
+              itemCount: orderlist!.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisExtent: 200,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  crossAxisCount: 2),
+              itemBuilder: ((context, index) {
+                final orderdata = orderlist![index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, OrderDetailsScreen.routeName,
+                        arguments: orderdata);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 5,
+                              spreadRadius: 1,
+                              offset: Offset(4, 4)),
+                        ],
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black12)),
+                    child: (Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          height: 140,
+                          child: SingleProduct(
+                            image: orderdata.products[0].imageUrls[0],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Text(
-                                orderdata.products[0].productName,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                        SizedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              const SizedBox(
+                                width: 10,
                               ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )),
-                ),
-              );
-              // SizedBox(
-              //   height: 140,
-              //   child: SingleProduct(
-              //     image: orderdata.products[0].imageUrls[0],
-              //   ),
-              // );
-            }),
+                              Expanded(
+                                child: Text(
+                                  orderdata.products[0].productName,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    )),
+                  ),
+                );
+                // SizedBox(
+                //   height: 140,
+                //   child: SingleProduct(
+                //     image: orderdata.products[0].imageUrls[0],
+                //   ),
+                // );
+              }),
+            ),
           );
   }
 }
